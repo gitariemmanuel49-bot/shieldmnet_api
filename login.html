@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shield M.Net - Fast WiFi</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}body{background:#0f172a;color:white;display:flex;justify-content:center;padding:15px}
+.card{background:#1e293b;width:100%;max-width:400px;border-radius:16px;padding:20px}
+h1{text-align:center;color:#38bdf8} .sub{text-align:center;color:#94a3b8;font-size:13px;margin-bottom:15px}
+.pkg{display:flex;justify-content:space-between;align-items:center;background:#334155;padding:12px;border-radius:10px;margin:7px 0;cursor:pointer;border:2px solid transparent}
+.pkg.active{border-color:#38bdf8;background:#0ea5e9} .price{color:#38bdf8;font-weight:bold}
+input{width:100%;padding:14px;border-radius:10px;border:none;margin:10px 0;background:#0f172a;color:white;font-size:16px;text-align:center}
+.btn{width:100%;padding:14px;background:#22c55e;color:white;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer}
+#status{text-align:center;margin-top:10px;font-size:14px;color:#facc15} .footer{text-align:center;margin-top:15px;font-size:12px;color:#64748b} .footer a{color:#38bdf8;text-decoration:none}
+</style></head><body>
+<div class="card">
+<h1>Shield M.Net</h1><div class="sub">Eldoret Fast WiFi | Instant M-Pesa Till 8574864</div>
+<div id="packages">
+<div class="pkg active" data-amount="5" data-pkg="10MIN-2M"><span><b>10 Minutes</b> - 2Mbps</span><span class="price">KES 5</span></div>
+<div class="pkg" data-amount="7" data-pkg="20MIN-2M"><span><b>20 Minutes</b></span><span class="price">KES 7</span></div>
+<div class="pkg" data-amount="9" data-pkg="30MIN-3M"><span><b>30 Minutes</b> - 3Mbps</span><span class="price">KES 9</span></div>
+<div class="pkg" data-amount="10" data-pkg="1HR-3M"><span><b>1 Hour</b></span><span class="price">KES 10</span></div>
+<div class="pkg" data-amount="13" data-pkg="2HRS-3M"><span><b>2 Hours</b></span><span class="price">KES 13</span></div>
+<div class="pkg" data-amount="16" data-pkg="3HRS-4M"><span><b>3 Hours</b></span><span class="price">KES 16</span></div>
+<div class="pkg" data-amount="49" data-pkg="1DAY-5M"><span><b>1 Day - 5Mbps</b></span><span class="price">KES 49</span></div>
+<div class="pkg" data-amount="250" data-pkg="1WEEK-5M"><span><b>1 Week</b></span><span class="price">KES 250</span></div>
+<div class="pkg" data-amount="800" data-pkg="1MONTH-8M"><span><b>1 Month - 8Mbps</b></span><span class="price">KES 800</span></div>
+</div>
+<input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
+<button class="btn" id="payBtn">Lipa na M-Pesa - Till 8574864</button>
+<div id="status"></div>
+<div class="footer">Care: <a href="tel:0752115379">0752115379</a><br>DDNS: hkd0amfcjgg.sn.mynetname.net<br>Powered by Shield M.Net</div>
+</div>
+<script>
+let selAmount=5, selPkg='10MIN-2M';
+document.querySelectorAll('.pkg').forEach(p=>{
+ p.onclick=()=>{document.querySelectorAll('.pkg').forEach(x=>x.classList.remove('active')); p.classList.add('active'); selAmount=p.dataset.amount; selPkg=p.dataset.pkg;}
+});
+const btn=document.getElementById('payBtn'); const phoneInput=document.getElementById('phone'); const statusDiv=document.getElementById('status');
+btn.onclick=async()=>{
+ let phone=phoneInput.value.trim(); if(!/^07\d{8}$/.test(phone)){ statusDiv.textContent='Enter valid 07XXXXXXXX'; return; }
+ btn.disabled=true; statusDiv.textContent='Sending STK to '+phone+'... Till 8574864';
+ try{
+  const url=`https://shieldmnet-api-1.onrender.com/shield_api.php?phone=${phone}&amount=${selAmount}&pkg=${selPkg}`;
+  const res=await fetch(url); const data=await res.json();
+  if(data.ResponseCode=='0'){ statusDiv.textContent='✓ STK Sent! Enter PIN for KES '+selAmount; statusDiv.style.color='#22c55e'; }
+  else { statusDiv.textContent='Error: '+(data.errorMessage||JSON.stringify(data)); statusDiv.style.color='#ef4444'; btn.disabled=false; }
+ }catch(e){ statusDiv.textContent='Network error. If charged call 0752115379'; btn.disabled=false; }
+};
+</script>
+</body></html>
