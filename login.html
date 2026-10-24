@@ -1,49 +1,83 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shield M.Net - Fast WiFi</title>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShieldMNet WiFi - Pay with M-Pesa</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}body{background:#0f172a;color:white;display:flex;justify-content:center;padding:15px}
-.card{background:#1e293b;width:100%;max-width:400px;border-radius:16px;padding:20px}
-h1{text-align:center;color:#38bdf8} .sub{text-align:center;color:#94a3b8;font-size:13px;margin-bottom:15px}
-.pkg{display:flex;justify-content:space-between;align-items:center;background:#334155;padding:12px;border-radius:10px;margin:7px 0;cursor:pointer;border:2px solid transparent}
-.pkg.active{border-color:#38bdf8;background:#0ea5e9} .price{color:#38bdf8;font-weight:bold}
-input{width:100%;padding:14px;border-radius:10px;border:none;margin:10px 0;background:#0f172a;color:white;font-size:16px;text-align:center}
-.btn{width:100%;padding:14px;background:#22c55e;color:white;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer}
-#status{text-align:center;margin-top:10px;font-size:14px;color:#facc15} .footer{text-align:center;margin-top:15px;font-size:12px;color:#64748b} .footer a{color:#38bdf8;text-decoration:none}
-</style></head><body>
-<div class="card">
-<h1>Shield M.Net</h1><div class="sub">Eldoret Fast WiFi | Instant M-Pesa Till 8574864</div>
-<div id="packages">
-<div class="pkg active" data-amount="5" data-pkg="10MIN-2M"><span><b>10 Minutes</b> - 2Mbps</span><span class="price">KES 5</span></div>
-<div class="pkg" data-amount="7" data-pkg="20MIN-2M"><span><b>20 Minutes</b></span><span class="price">KES 7</span></div>
-<div class="pkg" data-amount="9" data-pkg="30MIN-3M"><span><b>30 Minutes</b> - 3Mbps</span><span class="price">KES 9</span></div>
-<div class="pkg" data-amount="10" data-pkg="1HR-3M"><span><b>1 Hour</b></span><span class="price">KES 10</span></div>
-<div class="pkg" data-amount="13" data-pkg="2HRS-3M"><span><b>2 Hours</b></span><span class="price">KES 13</span></div>
-<div class="pkg" data-amount="16" data-pkg="3HRS-4M"><span><b>3 Hours</b></span><span class="price">KES 16</span></div>
-<div class="pkg" data-amount="49" data-pkg="1DAY-5M"><span><b>1 Day - 5Mbps</b></span><span class="price">KES 49</span></div>
-<div class="pkg" data-amount="250" data-pkg="1WEEK-5M"><span><b>1 Week</b></span><span class="price">KES 250</span></div>
-<div class="pkg" data-amount="800" data-pkg="1MONTH-8M"><span><b>1 Month - 8Mbps</b></span><span class="price">KES 800</span></div>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#0f172a;color:#fff;min-height:100vh;padding:15px}
+.header{text-align:center;padding:15px;background:#1e293b;border-radius:12px;margin-bottom:15px}
+.header h1{color:#22c55e;font-size:26px}
+.header p{color:#94a3b8;margin-top:5px}
+.packages{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
+.pkg{background:#1e293b;border:2px solid #334155;border-radius:12px;padding:12px;text-align:center;cursor:pointer}
+.pkg.active{border-color:#22c55e;background:#14532d}
+.pkg h3{color:#22c55e;font-size:18px}
+.pkg .price{font-size:22px;font-weight:bold;margin:5px 0}
+.pkg .time{color:#94a3b8;font-size:13px}
+.paybox{background:#1e293b;border-radius:12px;padding:15px}
+.paybox h2{color:#22c55e;margin-bottom:10px;text-align:center}
+input{width:100%;padding:14px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#fff;font-size:16px;margin-bottom:10px}
+button{width:100%;padding:14px;background:#22c55e;color:#000;border:none;border-radius:8px;font-size:18px;font-weight:bold;cursor:pointer}
+button:disabled{background:#475569;color:#94a3b8}
+.till{text-align:center;margin-top:10px;color:#94a3b8;font-size:13px}
+.till b{color:#22c55e}
+.status{margin-top:10px;padding:10px;border-radius:8px;display:none;text-align:center}
+.status.ok{display:block;background:#14532d;color:#86efac}
+.status.err{display:block;background:#7f1d1d;color:#fca5a5}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>ShieldMNet</h1>
+<p>Fast WiFi in Eldoret - Pay via M-Pesa</p>
 </div>
-<input type="tel" id="phone" placeholder="07XXXXXXXX" maxlength="10">
-<button class="btn" id="payBtn">Lipa na M-Pesa - Till 8574864</button>
-<div id="status"></div>
-<div class="footer">Care: <a href="tel:0752115379">0752115379</a><br>DDNS: hkd0amfcjgg.sn.mynetname.net<br>Powered by Shield M.Net</div>
+<div class="packages">
+<div class="pkg" onclick="selectPkg(this,10,60,1)"><h3>KES 10</h3><div class="price">1 Hour</div><div class="time">Unlimited - 1 Device</div></div>
+<div class="pkg" onclick="selectPkg(this,20,180,1)"><h3>KES 20</h3><div class="price">3 Hours</div><div class="time">Unlimited - 1 Device</div></div>
+<div class="pkg" onclick="selectPkg(this,30,300,2)"><h3>KES 30</h3><div class="price">5 Hours</div><div class="time">Unlimited - 2 Devices</div></div>
+<div class="pkg" onclick="selectPkg(this,50,1440,2)"><h3>KES 50</h3><div class="price">24 Hours</div><div class="time">Unlimited - 2 Devices</div></div>
+<div class="pkg" onclick="selectPkg(this,100,2880,3)"><h3>KES 100</h3><div class="price">2 Days</div><div class="time">Unlimited - 3 Devices</div></div>
+<div class="pkg" onclick="selectPkg(this,200,10080,3)"><h3>KES 200</h3><div class="price">7 Days</div><div class="time">Unlimited - 3 Devices</div></div>
+<div class="pkg" onclick="selectPkg(this,400,20160,5)"><h3>KES 400</h3><div class="price">14 Days</div><div class="time">Unlimited - 5 Devices</div></div>
+<div class="pkg" onclick="selectPkg(this,800,43200,8)"><h3>KES 800</h3><div class="price">30 Days</div><div class="time">Unlimited - 8 Devices</div></div>
+<div class="pkg" onclick="selectPkg(this,1500,43200,15)" style="grid-column: span 2;"><h3>KES 1500</h3><div class="price">30 Days Premium</div><div class="time">Unlimited - 15 Devices - Family</div></div>
+</div>
+<div class="paybox">
+<h2 id="selText">Select a package above</h2>
+<input type="tel" id="phone" placeholder="Safaricom 07... or 2547..." maxlength="13">
+<button id="payBtn" disabled onclick="pay()">Pay with M-Pesa</button>
+<div id="status" class="status"></div>
+<div class="till">Till Number: <b>8574864</b> | Powered by ShieldMNet Eldoret</div>
 </div>
 <script>
-let selAmount=5, selPkg='10MIN-2M';
-document.querySelectorAll('.pkg').forEach(p=>{
- p.onclick=()=>{document.querySelectorAll('.pkg').forEach(x=>x.classList.remove('active')); p.classList.add('active'); selAmount=p.dataset.amount; selPkg=p.dataset.pkg;}
-});
-const btn=document.getElementById('payBtn'); const phoneInput=document.getElementById('phone'); const statusDiv=document.getElementById('status');
-btn.onclick=async()=>{
- let phone=phoneInput.value.trim(); if(!/^07\d{8}$/.test(phone)){ statusDiv.textContent='Enter valid 07XXXXXXXX'; return; }
- btn.disabled=true; statusDiv.textContent='Sending STK to '+phone+'... Till 8574864';
- try{
-  const url=`https://shieldmnet-api-1.onrender.com/shield_api.php?phone=${phone}&amount=${selAmount}&pkg=${selPkg}`;
-  const res=await fetch(url); const data=await res.json();
-  if(data.ResponseCode=='0'){ statusDiv.textContent='✓ STK Sent! Enter PIN for KES '+selAmount; statusDiv.style.color='#22c55e'; }
-  else { statusDiv.textContent='Error: '+(data.errorMessage||JSON.stringify(data)); statusDiv.style.color='#ef4444'; btn.disabled=false; }
- }catch(e){ statusDiv.textContent='Network error. If charged call 0752115379'; btn.disabled=false; }
-};
+let selAmount=0, selTime=0, selDevices=0;
+function selectPkg(el, amount, minutes, devices){
+document.querySelectorAll('.pkg').forEach(p=>p.classList.remove('active'));
+el.classList.add('active'); selAmount=amount; selTime=minutes; selDevices=devices;
+document.getElementById('selText').innerText='Selected: KES '+amount+' - '+el.querySelector('.price').innerText;
+document.getElementById('payBtn').disabled=false;
+}
+function showStatus(msg, ok){
+let s=document.getElementById('status'); s.innerText=msg; s.className='status '+(ok?'ok':'err'); s.style.display='block';
+}
+async function pay(){
+let phone=document.getElementById('phone').value.trim();
+if(!phone){showStatus('Enter Safaricom number',false); return;}
+phone=phone.replace(/\s/g,''); if(phone.startsWith('0')) phone='254'+phone.substring(1); if(phone.startsWith('7')) phone='254'+phone;
+if(!/^2547\d{8}$/.test(phone)){showStatus('Invalid number. Use 07... or 2547...',false); return;}
+if(!selAmount){showStatus('Select package first',false); return;}
+let btn=document.getElementById('payBtn'); btn.disabled=true; btn.innerText='Sending STK...';
+showStatus('Sending M-Pesa STK Push to '+phone+' - Check phone and enter PIN',true);
+try{
+let res=await fetch('https://shieldmnet-api-1.onrender.com/api/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phone,amount:selAmount,account:'ShieldMNet',till:'8574864',duration:selTime})});
+let data=await res.json();
+if(data.success || data.ResponseCode=='0'){showStatus('STK sent! Enter M-Pesa PIN. After payment you auto-connect.',true);}
+else{showStatus('Failed: '+(data.message||'Try again'),false); btn.disabled=false; btn.innerText='Pay with M-Pesa';}
+}catch(e){showStatus('Network error. Your API may be sleeping - wait 30s and retry.',false); btn.disabled=false; btn.innerText='Pay with M-Pesa';}
+}
+var error='$(error)'; if(error) showStatus(error,false);
 </script>
-</body></html>
+</body>
+</html>
