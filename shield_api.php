@@ -3,7 +3,7 @@ $CONSUMER_KEY = "FcZBIcM1A3Ge7L1ZNjBUeoie8wWc2j8OS393mSPpikNsaKi1";
 $CONSUMER_SECRET = "VzGyyxbKlAw4ETQKtutPE63QeSdSsH2CJTBGHAQQ5WYwZ5MnE0u3QTAGyB0ThgJu";
 $TILL_NUMBER = "8574864";
 $PASSKEY = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919";
-$RENDER_URL = "https://shieldmnet-api.onrender.com";
+$RENDER_URL = "https://shieldmnet-api-1.onrender.com";
 $CALLBACK_URL = $RENDER_URL."/callback.php";
 
 header("Access-Control-Allow-Origin: *");
